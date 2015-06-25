@@ -85,7 +85,7 @@
             </objects>
             <point key="canvasLocation" x="1335" y="363"/>
         </scene>
-        <!--Camera View Controller-->
+        <!--Recipients-->
         <scene sceneID="YVu-aI-Ivv">
             <objects>
                 <tableViewController id="E2c-RF-cp6" customClass="CameraViewController" sceneMemberID="viewController">
@@ -106,7 +106,7 @@
                             <outlet property="delegate" destination="E2c-RF-cp6" id="sBo-gX-u2j"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="DGG-17-wqJ"/>
+                    <navigationItem key="navigationItem" title="Recipients" id="DGG-17-wqJ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YkG-13-EIB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

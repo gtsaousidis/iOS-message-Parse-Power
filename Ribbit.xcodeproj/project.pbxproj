@@ -45,6 +45,7 @@
 		09CFEC4D1B21E2B2001CE2A8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09CFEC4C1B21E2B2001CE2A8 /* Images.xcassets */; };
 		09CFEC501B21E2B2001CE2A8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09CFEC4E1B21E2B2001CE2A8 /* LaunchScreen.xib */; };
 		09CFEC5C1B21E2B2001CE2A8 /* RibbitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09CFEC5B1B21E2B2001CE2A8 /* RibbitTests.m */; };
+		09E8FDEA1B3C166E0067D3C4 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E8FDE91B3C166E0067D3C4 /* FriendsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,8 @@
 		09CFEC551B21E2B2001CE2A8 /* RibbitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RibbitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		09CFEC5A1B21E2B2001CE2A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09CFEC5B1B21E2B2001CE2A8 /* RibbitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RibbitTests.m; sourceTree = "<group>"; };
+		09E8FDE81B3C166E0067D3C4 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
+		09E8FDE91B3C166E0067D3C4 /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +215,8 @@
 				099EAB241B24BA470068EEBE /* LoginViewController.m */,
 				09703CF61B25C82400AA2A96 /* EditFriendTableViewController.h */,
 				09703CF71B25C82400AA2A96 /* EditFriendTableViewController.m */,
+				09E8FDE81B3C166E0067D3C4 /* FriendsViewController.h */,
+				09E8FDE91B3C166E0067D3C4 /* FriendsViewController.m */,
 			);
 			path = Ribbit;
 			sourceTree = "<group>";
@@ -344,6 +349,7 @@
 			files = (
 				099EAB251B24BA470068EEBE /* LoginViewController.m in Sources */,
 				09CFEC421B21E2B2001CE2A8 /* AppDelegate.m in Sources */,
+				09E8FDEA1B3C166E0067D3C4 /* FriendsViewController.m in Sources */,
 				09CFEC3F1B21E2B2001CE2A8 /* main.m in Sources */,
 				099EAAE71B249EB70068EEBE /* InboxViewController.m in Sources */,
 				099EAB281B24BA990068EEBE /* SignupViewController.m in Sources */,

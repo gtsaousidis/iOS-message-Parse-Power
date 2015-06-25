@@ -62,28 +62,81 @@
     PFUser *user = [self.allUsers objectAtIndex:indexPath.row];
     cell.textLabel.text = user.username;
     
+    if ([self isFriend:user]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     return cell;
-
 }
 
 #pragma mark - Table view delegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    PFRelation *friendsRelation = [self.currentUser relationForKey:@"friendsRelation"];
+    
     
     PFUser *user = [self.allUsers objectAtIndex:indexPath.row];
     
-    [friendsRelation addObject:user];
+     PFRelation *friendsRelation = [self.currentUser relationForKey:@"friendsRelation"];
+    
+    if ([self isFriend:user]) {
+        
+        //1. remove the checkmark
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        
+        //2.remove for the array of friends
+        
+        for(PFUser *friend in self.friends){
+            if ([friend.objectId isEqualToString:user.objectId]) {
+                [self.friends removeObject:friend];
+                
+                break;
+            }
+        }
+        
+        //3. remove for the backend
+       
+         PFUser *user = [self.allUsers objectAtIndex:indexPath.row];
+         [friendsRelation removeObject:user];
+        
+    }
+    else{
+        
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        [self.friends addObject:user];
+        [friendsRelation addObject:user];
+        
+    }
     [self.currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
         
         if (error) {
             NSLog(@"Error %@ %@", error, [error userInfo]);
         }
-    
+        
     }];
+   
+
+}
+
+#pragma mark - Helper Methods
+
+-(BOOL)isFriend:(PFUser *)user{
+
+    for(PFUser *friend in self.friends){
+        
+        if ([friend.objectId isEqualToString:user.objectId]) {
+            return YES;
+        }
+    
+    }
+    
+    return NO;
 
 }
 

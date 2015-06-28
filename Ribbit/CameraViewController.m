@@ -2,8 +2,7 @@
 //  CameraViewController.m
 //  Ribbit
 //
-//  Created by George Tsaousidis on 25/6/15.
-//  Copyright (c) 2015 DFG-Team. All rights reserved.
+//  Copyright (c) 2013 Treehouse. All rights reserved.
 //
 
 #import "CameraViewController.h"
@@ -15,92 +14,253 @@
 
 @implementation CameraViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
-    [self startCamera];
-    
+    self.friendsRelation = [[PFUser currentUser] objectForKey:@"friendsRelation"];
+    self.recipients = [[NSMutableArray alloc] init];
 }
 
--(void)viewWillAppear:(BOOL)animated{
-
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self startCamera];
-
+    PFQuery *query = [self.friendsRelation query];
+    [query orderByAscending:@"username"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (error) {
+            NSLog(@"Error %@ %@", error, [error userInfo]);
+        }
+        else {
+            self.friends = objects;
+            [self.tableView reloadData];
+        }
+    }];
+    
+    if (self.image == nil && [self.videoFilePath length] == 0) {
+        self.imagePicker = [[UIImagePickerController alloc] init];
+        self.imagePicker.delegate = self;
+        self.imagePicker.allowsEditing = NO;
+        self.imagePicker.videoMaximumDuration = 10;
+        
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        }
+        else {
+            self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        }
+        
+        self.imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePicker.sourceType];
+        
+        [self presentViewController:self.imagePicker animated:NO completion:nil];
+    }
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     // Return the number of rows in the section.
-    return 0;
+    return [self.friends count];
 }
 
-# pragma mark - Image Picker Controller Delegate 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Jell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    PFUser *user = [self.friends objectAtIndex:indexPath.row];
+    cell.textLabel.text = user.username;
+    
+    if ([self.recipients containsObject:user.objectId]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
+    return cell;
+}
 
--(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+#pragma mark - Table view delegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    PFUser *user = [self.friends objectAtIndex:indexPath.row];
+    
+    if (cell.accessoryType == UITableViewCellAccessoryNone) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        [self.recipients addObject:user.objectId];
+    }
+    else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self.recipients removeObject:user.objectId];
+    }
+    
+    NSLog(@"%@", self.recipients);
+}
+
+#pragma mark - Image Picker Controller delegate
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self dismissViewControllerAnimated:NO completion:nil];
+    [self.tabBarController setSelectedIndex:0];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
+        // A photo was taken/selected!
+        self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            // Save the image!
+            UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
+        }
+    }
+    else {
+        // A video was taken/selected!
+        NSURL *imagePickerURL = [info objectForKey:UIImagePickerControllerMediaURL];
+        self.videoFilePath = [imagePickerURL path];
+        
+        if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            // Save the video!
+            if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.videoFilePath)) {
+                UISaveVideoAtPathToSavedPhotosAlbum(self.videoFilePath, nil, nil, nil);
+            }
+        }
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)cancelMessage:(id)sender {
+    
+    [self reset];
     
     [self.tabBarController setSelectedIndex:0];
     
 }
 
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-
+- (IBAction)sendMessage:(id)sender {
     
-    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    
-    if([mediaType isEqualToString:(NSString *)kUTTypeImage]){
+    if (self.image == nil && [self.videoFilePath length] == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Try again!" message:@"Please capture or select a photo or video to share!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         
-        //a photo was taken
-        self.image = [info  objectForKey:UIImagePickerControllerOriginalImage];
-        if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            //save the image
-            UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
-        }
+        [alertView show];
+        
+        [self presentViewController:self.imagePicker animated:NO completion:nil];
+        
     }
     else{
     
-        //a video has been taken
-        NSURL *imagePickerURL = [info objectForKey:UIImagePickerControllerMediaURL];
-        self.videoFilePath = [imagePickerURL path];
+        [self uploadMessage];
+        [self reset];
         
-        if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            //save the video
-            if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.videoFilePath)) {
-                UISaveVideoAtPathToSavedPhotosAlbum(self.videoFilePath, nil, nil, nil);
-            }
-        }
+        [self.tabBarController setSelectedIndex:0];
+        
+    }
+    
+}
+
+
+#pragma mark - Helper Methods
+
+-(void)uploadMessage{
+    NSData *fileData;
+    NSString *fileName;
+    NSString *fileType;
+    
+    
+    //check if is an image or video
+    if (self.image != nil) {
+        UIImage *newImage = [self resizeImage:self.image toWidth:320.0f andHeight:480.0f];
+        fileData = UIImagePNGRepresentation(newImage);
+        fileName = @"image.png";
+        fileType = @"image";
+    }
+    else{
+        
+        fileData = [NSData dataWithContentsOfFile:self.videoFilePath];
+        fileName = @"video.mov";
+        fileType = @"video";
     
     }
+    
+    PFFile *file = [PFFile fileWithName:fileName data:fileData];
+    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+    
+        if (error) {
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"An error occurred!" message:@"Please try sending your message again!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            
+            [alertView show];
+        }
+        else{
+        
+            PFObject *message = [PFObject objectWithClassName:@"Messages"];
+            [message setObject:file forKey:@"file"];
+            
+            [message setObject:fileType forKey:@"fileType"];
+            [message setObject:self.recipients forKey:@"recipientdIds"];
+            [message setObject:[[PFUser currentUser] objectId] forKey:@"senderId"];
+            [message setObject:[[PFUser currentUser] username] forKey:@"senderName"];
+             [message saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+                
+                if (error) {
+                    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"An error occurred!" message:@"Please try sending your message again!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                    
+                    [alertView show];
+                }
+                else{
+                
+                    //everything going great! yeah!!!
+                    
+                }
+                
+            }];
+        
+        }
+       
+    }];
 
-    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)reset{
+
+    self.image = nil;
+    self.videoFilePath = nil;
+    [self.recipients removeAllObjects];
+    
+    
+    
+}
+
+-(UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height{
+
+    CGSize newSize = CGSizeMake(width, height);
+    CGRect newRectangle = CGRectMake(0, 0, width, height);
+    
+    UIGraphicsBeginImageContext(newSize);
+    [self.image drawInRect:newRectangle];
+    
+    UIImage *resizeImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return resizeImage;
+
 }
 
 
-#pragma mark - Help Methods
 
--(void)startCamera{
-    
-    self.imagePicker = [[UIImagePickerController alloc]init];
-    self.imagePicker.delegate = self;
-    self.imagePicker.allowsEditing = NO;
-    self.imagePicker.videoMaximumDuration = 10;
-    
-    self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    self.imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePicker.sourceType];
-    
-    [self presentViewController:self.imagePicker animated:NO completion:nil];
-
-}
 
 @end

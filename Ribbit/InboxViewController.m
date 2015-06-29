@@ -18,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.moviePlayer = [[MPMoviePlayerController alloc]init];
+    
     PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
     testObject[@"foo"] = @"bar";
     [testObject saveInBackground];
@@ -111,7 +113,19 @@
         
     }
     else{
-    
+        //if the file type is a video
+        
+        PFFile *videoFile = [self.selectedMessage objectForKey:@"file"];
+        NSURL *fileUrl = [NSURL URLWithString:videoFile.url];
+        self.moviePlayer.contentURL = fileUrl;
+        [self.moviePlayer prepareToPlay];
+        
+        //added to the view controller show we can see it
+        
+        [self.view addSubview:self.moviePlayer.view];
+        
+        [self.moviePlayer setFullscreen:YES animated:YES];
+      
     }
 
 }

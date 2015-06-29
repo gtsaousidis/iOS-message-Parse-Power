@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -132,7 +132,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="4FX-wD-Lwh">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Pell" id="4FX-wD-Lwh">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4FX-wD-Lwh" id="ouV-Al-WCK">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -153,11 +153,39 @@
                     </navigationItem>
                     <connections>
                         <segue destination="M5R-ua-McL" kind="push" identifier="showLogin" id="RZG-Mv-O1w"/>
+                        <segue destination="ZaB-y5-DsZ" kind="push" identifier="showImage" id="HyP-hU-BCI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cGQ-s1-XKZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="942" y="-298"/>
+            <point key="canvasLocation" x="829" y="-303"/>
+        </scene>
+        <!--Image View Controller-->
+        <scene sceneID="1Vb-0f-sqQ">
+            <objects>
+                <viewController id="ZaB-y5-DsZ" customClass="ImageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xRu-Qq-23r"/>
+                        <viewControllerLayoutGuide type="bottom" id="Zow-CT-Dcw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Rb6-P3-iVs">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ScY-cf-5bO">
+                                <rect key="frame" x="0.0" y="9" width="320" height="568"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="7vP-FS-OW0"/>
+                    <connections>
+                        <outlet property="imageView" destination="ScY-cf-5bO" id="dez-HJ-WyS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u8X-6r-QQR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1335" y="-968"/>
         </scene>
         <!--Ribbit-->
         <scene sceneID="tWE-qG-6oj">

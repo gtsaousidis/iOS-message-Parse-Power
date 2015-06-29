@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		09703CF81B25C82400AA2A96 /* EditFriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09703CF71B25C82400AA2A96 /* EditFriendTableViewController.m */; };
+		099B611D1B4188BF000743F1 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 099B611C1B4188BF000743F1 /* ImageViewController.m */; };
 		099EAAE71B249EB70068EEBE /* InboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 099EAAE61B249EB70068EEBE /* InboxViewController.m */; };
 		099EAAF31B24B4330068EEBE /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 099EAAED1B24B4330068EEBE /* Bolts.framework */; };
 		099EAAF41B24B4330068EEBE /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 099EAAEE1B24B4330068EEBE /* Parse.framework */; };
@@ -62,6 +63,8 @@
 /* Begin PBXFileReference section */
 		09703CF61B25C82400AA2A96 /* EditFriendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditFriendTableViewController.h; sourceTree = "<group>"; };
 		09703CF71B25C82400AA2A96 /* EditFriendTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditFriendTableViewController.m; sourceTree = "<group>"; };
+		099B611B1B4188BF000743F1 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageViewController.h; path = ../ImageViewController.h; sourceTree = "<group>"; };
+		099B611C1B4188BF000743F1 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageViewController.m; path = ../ImageViewController.m; sourceTree = "<group>"; };
 		099EAAE51B249EB70068EEBE /* InboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxViewController.h; sourceTree = "<group>"; };
 		099EAAE61B249EB70068EEBE /* InboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxViewController.m; sourceTree = "<group>"; };
 		099EAAEB1B24B41E0068EEBE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -212,6 +215,8 @@
 				09CFEC3C1B21E2B2001CE2A8 /* Supporting Files */,
 				099EAAE51B249EB70068EEBE /* InboxViewController.h */,
 				099EAAE61B249EB70068EEBE /* InboxViewController.m */,
+				099B611B1B4188BF000743F1 /* ImageViewController.h */,
+				099B611C1B4188BF000743F1 /* ImageViewController.m */,
 				099EAB261B24BA990068EEBE /* SignupViewController.h */,
 				099EAB271B24BA990068EEBE /* SignupViewController.m */,
 				099EAB231B24BA470068EEBE /* LoginViewController.h */,
@@ -358,6 +363,7 @@
 				09E8FDEA1B3C166E0067D3C4 /* FriendsViewController.m in Sources */,
 				09CFEC3F1B21E2B2001CE2A8 /* main.m in Sources */,
 				099EAAE71B249EB70068EEBE /* InboxViewController.m in Sources */,
+				099B611D1B4188BF000743F1 /* ImageViewController.m in Sources */,
 				099EAB281B24BA990068EEBE /* SignupViewController.m in Sources */,
 				09703CF81B25C82400AA2A96 /* EditFriendTableViewController.m in Sources */,
 			);

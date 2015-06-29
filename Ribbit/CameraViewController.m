@@ -165,7 +165,6 @@
     else{
     
         [self uploadMessage];
-        [self reset];
         
         [self.tabBarController setSelectedIndex:0];
         
@@ -224,6 +223,8 @@
                 else{
                 
                     //everything going great! yeah!!!
+                
+                    [self reset];
                     
                 }
                 

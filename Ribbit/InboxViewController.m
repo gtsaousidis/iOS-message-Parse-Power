@@ -127,6 +127,27 @@
         [self.moviePlayer setFullscreen:YES animated:YES];
       
     }
+    
+    //Delete it!
+    
+    NSMutableArray *recipientIds = [NSMutableArray arrayWithArray:[self.selectedMessage objectForKey:@"recipientIds"]];
+    
+    NSLog(@"Recipients: %@", recipientIds);
+    
+    if (recipientIds.count == 1) {
+        //Lase recipient -delete
+        [self.selectedMessage deleteInBackground];
+    }
+    else{
+    
+        //remove the recipient and save it
+        
+        [recipientIds removeObject:[[PFUser currentUser]objectId]];
+        
+        [self.selectedMessage setObject:recipientIds forKey:@"recipientsIds"];
+        [self.selectedMessage saveInBackground];
+        
+    }
 
 }
 

@@ -130,7 +130,7 @@
     
     //Delete it!
     
-    NSMutableArray *recipientIds = [NSMutableArray arrayWithArray:[self.selectedMessage objectForKey:@"recipientIds"]];
+    NSMutableArray *recipientIds = [NSMutableArray arrayWithArray:[self.selectedMessage objectForKey:@"recipientdIds"]];
     
     NSLog(@"Recipients: %@", recipientIds);
     
@@ -144,7 +144,7 @@
         
         [recipientIds removeObject:[[PFUser currentUser]objectId]];
         
-        [self.selectedMessage setObject:recipientIds forKey:@"recipientsIds"];
+        [self.selectedMessage setObject:recipientIds forKey:@"recipientsdIds"];
         [self.selectedMessage saveInBackground];
         
     }
